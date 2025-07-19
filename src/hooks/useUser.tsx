@@ -9,7 +9,10 @@ export default function useUser() {
         name: "",
         email: "",
         type: "none",
-        token: ""
+        token: "",
+        firstName: "",
+        lastName: "",
+        address: "",
     };
 
     const [appUser, setAppUser] = useState<User>(() => {

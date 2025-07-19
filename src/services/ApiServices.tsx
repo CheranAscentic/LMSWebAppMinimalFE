@@ -64,8 +64,11 @@ interface UserData {
   password?: string;
 }
 
-interface UpdateUserData extends Partial<UserData> {
-  id?: number;
+interface UpdateUserData {
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
 }
 
 interface BorrowedBook {

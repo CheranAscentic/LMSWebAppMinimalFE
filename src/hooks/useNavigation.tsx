@@ -8,6 +8,7 @@ import LogoutPage from "@/pages/LogoutPage";
 import { RegisterForm } from "@/pages/RegisterForm";
 import BorrowedBooks from "@/pages/BorrowedBooks";
 import ManageBooks from "@/pages/ManageBooks";
+import { UserProfile } from "@/pages/UserProfile";
 
 interface UseNavigationProps {
     appUser: User;
@@ -64,6 +65,12 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
             page: <LogoutPage logout={logout} />,
             roles: ["Member", "StaffMinor", "StaffManagement"]
         },
+        {
+            label: "My Profile",
+            page: <UserProfile appUser={appUser} setAppUser={setAppUser}/>,
+            roles: ["Member", "StaffMinor", "StaffManagement"]
+        },
+
     ]
     , [appUser, setAppUser]);
 
