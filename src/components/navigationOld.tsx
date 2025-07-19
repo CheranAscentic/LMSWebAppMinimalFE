@@ -25,7 +25,7 @@ export default function Navigation({onPageChange, currentPage }: NavigationProps
   ];
 
   const filteredNavItems = navItems.filter(item => 
-    item.roles.includes(appUser.role)
+    item.roles.includes(appUser.type)
   );
 
   if (!appUser.isloggedIn) {
@@ -73,7 +73,7 @@ export default function Navigation({onPageChange, currentPage }: NavigationProps
     <div className="flex flex-col space-y-2">
       <div className="text-foreground text-sm mb-4 bg-card border border-border p-3 rounded-lg">
         <p>Welcome, {appUser.name}</p>
-        <p className="text-muted-foreground">Role: {appUser.role}</p>
+        <p className="text-muted-foreground">Role: {appUser.type}</p>
       </div>
       
       {filteredNavItems.map((item) => (

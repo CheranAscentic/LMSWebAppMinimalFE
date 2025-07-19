@@ -3,6 +3,9 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    role: "Member" | "StaffMinor" | "StaffManagement" | "none";
+    type: "Member" | "StaffMinor" | "StaffManagement" | "none";
     token: string;
+    firstName?: string;
+    lastName?: string;
+    address?: string;
 }

@@ -1,11 +1,22 @@
 import { useState, useEffect, type ReactNode, useMemo } from "react";
 import BooksList from "../pages/BooksList";
-import MyBooks from "../pages/MyBooks";
+// import MyBooks from "../pages/MyBooks";
 import AllUsers from "../pages/AllUsers";
 import type { User } from "../models/User";
+import { LoginForm } from "@/pages/LoginForm";
+import LogoutPage from "@/pages/LogoutPage";
+import { RegisterForm } from "@/pages/RegisterForm";
+import BorrowedBooks from "@/pages/BorrowedBooks";
+import ManageBooks from "@/pages/ManageBooks";
+
+interface UseNavigationProps {
+    appUser: User;
+    setAppUser: (user: User) => void;
+    logout: () => void;
+}
 
 
-export default function useNavigation(appUser: User) {
+export default function useNavigation({ appUser, setAppUser, logout}: UseNavigationProps) {
 
     interface NavItem {
         label: string;
@@ -14,83 +25,58 @@ export default function useNavigation(appUser: User) {
     }
 
     const [navItems, setNavItems] = useState<NavItem[]>([]);   
-    const [viewPage, setViewPage] = useState<ReactNode>(<BooksList />);     
+    const [viewPage, setViewPage] = useState<ReactNode>(<BooksList appUser={appUser}/>);     
 
     const items = useMemo(() =>
         [
         {
             label: "Browse Books",
-            page: <BooksList />,
-            roles: ["none", "Member", "StaffMinor", "StaffManagement"]
+            page: <BooksList appUser={appUser}/>,
+            roles: ["none", "Member"]
         },
         {
             label: "Login",
-            page: <div className="p-6"><h2 className="text-2xl font-bold mb-4">Login</h2><p>Please login to access your account</p></div>,
+            page: <LoginForm setAppUser={setAppUser}/>,
             roles: ["none"]
         },
         {
             label: "Register",
-            page: <div className="p-6"><h2 className="text-2xl font-bold mb-4">Register</h2><p>Create a new account to start using the library</p></div>,
+            page: <RegisterForm />,
             roles: ["none"]
         },
         {
-            label: "Logout",
-            page: <div className="p-6"><h2 className="text-2xl font-bold mb-4">Logout</h2><p>You have been logged out successfully</p></div>,
-            roles: ["Member", "StaffMinor", "StaffManagement"]
-        },
-        {
-            label: "My Books",
-            page: <MyBooks userId={appUser.id} />,
+            label: "Borrowed Books",
+            page: <BorrowedBooks userId={appUser.id} />,
             roles: ["Member"]
         },
         {
             label: "User Management",
-            page: <AllUsers currentUserRole={appUser.role} />,
+            page: <AllUsers currentUserRole={appUser.type} />,
             roles: ["StaffManagement"]
         },
         {
             label: "Manage Books",
-            page: (
-                <div className="p-6">
-                    <h2 className="text-2xl font-bold mb-4">Manage Books</h2>
-                    <p>Add, edit, or remove books from the library</p>
-                </div>
-            ),
+            page: <ManageBooks appUser={appUser}/>,
             roles: ["StaffMinor", "StaffManagement"]
         },
         {
-            label: "Reports",
-            page: (
-                <div className="p-6">
-                    <h2 className="text-2xl font-bold mb-4">Reports</h2>
-                    <p>View library statistics and reports</p>
-                </div>
-            ),
-            roles: ["StaffMinor", "StaffManagement"]
-        },
-        {
-            label: "Settings",
-            page: (
-                <div className="p-6">
-                    <h2 className="text-2xl font-bold mb-4">Settings</h2>
-                    <p>Configure your account settings</p>
-                </div>
-            ),
+            label: "Logout",
+            page: <LogoutPage logout={logout} />,
             roles: ["Member", "StaffMinor", "StaffManagement"]
-        }
+        },
     ]
-    , [appUser.role, appUser.id]);
+    , [appUser, setAppUser]);
 
     useEffect(() => {
         if (!appUser) return;
-        const defaultPage = items.find(item => item.roles?.includes(appUser.role))?.page;
+        const defaultPage = items.find(item => item.roles?.includes(appUser.type))?.page;
         if (defaultPage) {
             setViewPage(defaultPage);
         }
     }, [appUser, items]);
 
     useEffect(() => {
-        setNavItems(items.filter(item => !item.roles || item.roles.includes(appUser.role)));
+        setNavItems(items.filter(item => !item.roles || item.roles.includes(appUser.type)));
     }, [appUser, items]);
 
     return {

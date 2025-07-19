@@ -8,7 +8,7 @@ export default function useUser() {
         id: 0,
         name: "",
         email: "",
-        role: "none",
+        type: "none",
         token: ""
     };
 

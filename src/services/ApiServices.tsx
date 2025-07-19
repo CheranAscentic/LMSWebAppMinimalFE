@@ -1,3 +1,6 @@
+import type { Book } from '../models/Book';
+import type { User } from '../models/User';
+
 interface ApiResponse<T = unknown> {
   success: boolean;
   message: string;
@@ -13,21 +16,21 @@ interface RequestOptions {
   headers?: Record<string, string>;
 }
 
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  isbn: string;
-  publicationYear: number;
-  availableCopies: number;
-}
+// interface Book {
+//   id: number;
+//   title: string;
+//   author: string;
+//   isbn: string;
+//   publicationYear: number;
+//   availableCopies: number;
+// }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  type: string;
-}
+// interface User {
+//   id: number;
+//   name: string;
+//   email: string;
+//   type: string;
+// }
 
 interface LoginData {
   user: User;
@@ -66,12 +69,12 @@ interface UpdateUserData extends Partial<UserData> {
 }
 
 interface BorrowedBook {
-  id: number;
-  bookId: number;
-  memberId: number;
-  borrowDate: string;
-  dueDate: string;
-  returnDate?: string;
+  // id: number;
+  // bookId: number;
+  // memberId: number;
+  // borrowDate: string;
+  // dueDate: string;
+  // returnDate?: string;
   book: Book;
 }
 
@@ -88,7 +91,9 @@ class ApiService {
   }
 
   private getAuthToken(): string | null {
-    return localStorage.getItem('authToken');
+    const user : User = JSON.parse(localStorage.getItem('appuser') || '{}');
+    console.log('Retrieved token from localStorage:', user.token);
+    return user.token;
   }
 
   private getAuthHeaders(): Record<string, string> {
@@ -118,6 +123,9 @@ class ApiService {
     }
 
     try {
+
+      console.log(`Making ${method} request to ${this.baseUrl}${endpoint}`, requestConfig);
+      console.log('Request Headers:', requestHeaders);
       const response = await fetch(`${this.baseUrl}${endpoint}`, requestConfig);
       
       if (response.status === 401) {
@@ -126,6 +134,8 @@ class ApiService {
       }
 
       const data: ApiResponse<T> = await response.json();
+
+      console.log('Raw fetch data:', data);
       
       if (!data.success) {
         throw new Error(data.error || data.message);
@@ -139,9 +149,7 @@ class ApiService {
   }
 
   private handleAuthError(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userType');
-    localStorage.removeItem('userId');
+    console.error('Authentication error. Redirecting to login...');
   }
 
   async login(email: string, password: string): Promise<ApiResponse<LoginData>> {
@@ -272,8 +280,8 @@ class ApiService {
     });
   }
 
-  async getBorrowedBooks(memberId: number): Promise<ApiResponse<BorrowedBook[]>> {
-    return this.makeRequest<BorrowedBook[]>('/api/borrowing/member/books', {
+  async getBorrowedBooks(memberId: number): Promise<ApiResponse<Book[]>> {
+    return this.makeRequest<Book[]>('/api/borrowing/member/books', {
       method: 'POST',
       body: { memberId },
       requiresAuth: true

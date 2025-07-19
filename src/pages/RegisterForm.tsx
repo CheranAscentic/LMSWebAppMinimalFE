@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { useApi } from '../hooks/useApi';
 import apiService, { type RegisterData } from '../services/ApiServices';
 import { User, Mail, Lock, UserCheck, Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
-interface RegisterFormProps {
-  onRegisterSuccess: () => void;
-}
-
-export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
+export function RegisterForm() {
   const [formData, setFormData] = useState<RegisterData>({
     name: '',
     email: '',
@@ -117,8 +115,8 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
       });
       setValidationErrors({});
 
-      // Call success callback
-      onRegisterSuccess();
+
+
     } catch (error) {
       console.error('Registration failed:', error);
     }
@@ -136,7 +134,7 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
           </label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
+            <Input
               id="name"
               name="name"
               type="text"
@@ -161,7 +159,7 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
           </label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
+            <Input
               id="email"
               name="email"
               type="email"
@@ -220,7 +218,7 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
           </label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
+            <Input
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
@@ -245,13 +243,13 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
           )}
         </div>
 
-        <button 
+        <Button
           type="submit" 
           disabled={loading || loadingUserTypes}
-          className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+          className="w-full p-3"
         >
           {loading ? 'Creating Account...' : 'Create Account'}
-        </button>
+        </Button>
 
         {error && (
           <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
@@ -259,13 +257,7 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
           </div>
         )}
 
-        {/* Debug Information (remove in production) */}
-        {import.meta.env.MODE === 'development' && (
-          <div className="mt-4 p-3 bg-gray-100 rounded-lg text-sm">
-            <p><strong>Available User Types:</strong> {userTypes.join(', ')}</p>
-            <p><strong>Selected Type:</strong> {formData.userType || 'None'}</p>
-          </div>
-        )}
+        
       </form>
     </div>
   );

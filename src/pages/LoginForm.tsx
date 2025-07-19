@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { useApi } from '../hooks/useApi';
 import apiService, { type LoginData } from '../services/ApiServices';
 import { Button } from '../components/ui/button';
+import type { User } from '@/models/User';
+import { Input } from '@/components/ui/input';
+import { Mail, Lock } from 'lucide-react';
 
 interface LoginFormProps {
-  onLoginSuccess: (userData: LoginData) => void;
+  setAppUser: (user: User) => void;
 }
 
-export function LoginForm({ onLoginSuccess }: LoginFormProps) {
+export function LoginForm({ setAppUser }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { loading, error, execute } = useApi<LoginData>();
@@ -18,13 +21,21 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     try {
       const response = await execute(() => apiService.login(email, password));
       
-      // Store auth data
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('userType', response.data.user.type);
-      localStorage.setItem('userId', response.data.user.id.toString());
+      // // Store auth data
+      // localStorage.setItem('authToken', response.data.token);
+      // localStorage.setItem('userType', response.data.user.type);
+      // localStorage.setItem('userId', response.data.user.id.toString());
       
       // Call the success callback to update app state
-      onLoginSuccess(response.data);
+      const user = {
+        isloggedIn: true,
+        id: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email,
+        type: response.data.user.type as "Member" | "StaffMinor" | "StaffManagement" | "none",
+        token: response.data.token
+      }
+      setAppUser(user);
       
       console.log('Login successful');
     } catch (error) {
@@ -36,31 +47,33 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login to Lib-X</h2>
       <form onSubmit={handleLogin} className="space-y-4">
-        <div>
+        <div className='relative'>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
             Email Address
           </label>
-          <input
+          <Mail className="absolute left-3 top-1/2 transform translate-y-0.5 text-gray-400 w-5 h-5" />
+          <Input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10"
             required
           />
         </div>
-        <div>
+        <div className='relative'>
           <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
             Password
           </label>
-          <input
+          <Lock className="absolute left-3 top-1/2 transform translate-y-0.5 text-gray-400 w-5 h-5" />
+          <Input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10"
             required
           />
         </div>
