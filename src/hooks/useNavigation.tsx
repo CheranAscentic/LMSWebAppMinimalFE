@@ -1,7 +1,7 @@
 import { useState, useEffect, type ReactNode, useMemo } from "react";
 import BooksList from "../pages/BooksList";
 // import MyBooks from "../pages/MyBooks";
-import AllUsers from "../pages/AllUsers";
+import ManageUsers from "../pages/ManageUsers";
 import type { User } from "../models/User";
 import { LoginForm } from "@/pages/LoginForm";
 import LogoutPage from "@/pages/LogoutPage";
@@ -52,11 +52,11 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
         },
         {
             label: "User Management",
-            page: <AllUsers currentUserRole={appUser.type} />,
+            page: <ManageUsers currentUserRole={appUser.type} setViewPage={setViewPage} />,
             roles: ["StaffManagement"]
         },
         {
-            label: "Manage Books",
+            label: "Book Management",
             page: <ManageBooks appUser={appUser}/>,
             roles: ["StaffMinor", "StaffManagement"]
         },
@@ -73,14 +73,6 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
 
     ]
     , [appUser, setAppUser]);
-
-    // useEffect(() => {
-    //     if (!appUser) return;
-    //     const defaultPage = items.find(item => item.roles?.includes(appUser.type))?.page;
-    //     if (defaultPage) {
-    //         setViewPage(defaultPage);
-    //     }
-    // }, [appUser, items]);
 
     useEffect(() => {
         setNavItems(items.filter(item => !item.roles || item.roles.includes(appUser.type)));

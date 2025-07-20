@@ -27,15 +27,6 @@ export default function Navigation({ navItems, setViewPage }: NavigationProps) {
             case "Logout":
                 variant = "destructive";
                 break;
-            // case "Login":
-            //     variant = "default";
-            //     break;
-            // case "Register":
-            //     variant = "outline";
-            //     break;
-            // case "User Management":
-            //     variant = "default";
-            //     break;
             default:
                 variant = "secondary";
         }

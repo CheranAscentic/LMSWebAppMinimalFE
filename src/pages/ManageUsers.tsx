@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useApi } from '../hooks/useApi';
 import apiService, { type User } from '../services/ApiServices';
 import { Users, Search, UserPlus, Edit3, Trash2, Shield, User as UserIcon, Mail } from 'lucide-react';
 import Loading from '@/components/ui/loading';
+import { CreateUser } from './CreateUser';
+import { UpdateUser } from './UpdateUser';
 
-interface AllUsersProps {
+interface ManageUsersProps {
   currentUserRole: string;
+  setViewPage: (page: ReactNode) => void;
 }
 
-export default function AllUsers({ currentUserRole }: AllUsersProps) {
+export default function ManageUsers({ currentUserRole, setViewPage }: ManageUsersProps) {
   const { data: users, loading, error, execute } = useApi<User[]>();
   const { loading: deletingUser, execute: executeDelete } = useApi<string>();
   const [searchTerm, setSearchTerm] = useState('');
@@ -190,7 +193,9 @@ export default function AllUsers({ currentUserRole }: AllUsersProps) {
           </div>
 
           {/* Add User Button */}
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+          <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+          onClick={() => setViewPage(<CreateUser />)}>
             <UserPlus className="w-4 h-4 mr-2" />
             Add New User
           </button>
@@ -312,7 +317,9 @@ export default function AllUsers({ currentUserRole }: AllUsersProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors">
+                      <button 
+                      className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                      onClick={() => setViewPage(<UpdateUser updateUser={user} />)}>
                         <Edit3 className="w-4 h-4" />
                       </button>
                       <button 
