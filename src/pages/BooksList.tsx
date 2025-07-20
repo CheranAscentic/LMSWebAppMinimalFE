@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useApi } from '../hooks/useApi';
 import apiService from '../services/ApiServices';
-import { BookOpen, User as UserIcon, Hash, Calendar, Package, Library } from 'lucide-react';
+import { BookOpen, User as UserIcon, Hash, Calendar, Library, Key } from 'lucide-react';
 import type { Book } from '../models/Book';
 import type { User } from '@/models/User';
 import { Button } from '@/components/ui/button';
@@ -57,19 +57,10 @@ export default function BooksList({appUser} : BookListProps) {
         </h2>
       {/* <div className="grid gap-6 p-6 md:grid-cols-2 lg:grid-cols-3"> */}
       <div
-      className="
-        grid gap-6 p-6
-        grid-cols-1
-        sm:grid-cols-2
-        md:grid-cols-3
-        xl:grid-cols-4
-        2xl:grid-cols-5
-        auto-rows-fr
-      "
+      className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 auto-rows-fr "
       style={{
         gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
-      }}
-    >
+      }} >
         {books?.map((book: Book) => (
           <div
             key={book.id}
@@ -86,7 +77,6 @@ export default function BooksList({appUser} : BookListProps) {
                 grid
                 grid-cols-[5fr_5fr_1fr_5fr]
                 grid-rows-[1fr_2fr_3fr_1fr]
-                gap-2
               "
               style={{ minHeight: 320 }}
             >
@@ -127,15 +117,15 @@ export default function BooksList({appUser} : BookListProps) {
                   </div>
                   <div className="flex items-center">
                     <Hash className="w-4 h-4 mr-2 text-muted" style={{ color: 'var(--color-muted-foreground)' }} />
-                    <span>ID: {book.id}</span>
+                    <span>ISBN: {book.isbn}</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="w-4 h-4 mr-2 text-muted" style={{ color: 'var(--color-muted-foreground)' }} />
                     <span>Published: {book.publicationYear}</span>
                   </div>
                   <div className="flex items-center">
-                    <Package className="w-4 h-4 mr-2 text-muted" style={{ color: 'var(--color-muted-foreground)' }} />
-                    <span>Available: {book.available ? "Yes" : "No"} </span>
+                    <Key className="w-4 h-4 mr-2 text-muted" style={{ color: 'var(--color-muted-foreground)' }} />
+                    <span>ID: {book.id}</span>
                   </div>
                 </div>
               </div>

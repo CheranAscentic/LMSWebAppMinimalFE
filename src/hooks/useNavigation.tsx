@@ -37,7 +37,7 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
         },
         {
             label: "Login",
-            page: <LoginForm setAppUser={setAppUser}/>,
+            page: <LoginForm setAppUser={setAppUser} appUser={appUser}/>,
             roles: ["none"]
         },
         {
@@ -61,26 +61,26 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
             roles: ["StaffMinor", "StaffManagement"]
         },
         {
-            label: "Logout",
-            page: <LogoutPage logout={logout} />,
+            label: "My Profile",
+            page: <UserProfile appUser={appUser} setAppUser={setAppUser}/>,
             roles: ["Member", "StaffMinor", "StaffManagement"]
         },
         {
-            label: "My Profile",
-            page: <UserProfile appUser={appUser} setAppUser={setAppUser}/>,
+            label: "Logout",
+            page: <LogoutPage logout={logout} />,
             roles: ["Member", "StaffMinor", "StaffManagement"]
         },
 
     ]
     , [appUser, setAppUser]);
 
-    useEffect(() => {
-        if (!appUser) return;
-        const defaultPage = items.find(item => item.roles?.includes(appUser.type))?.page;
-        if (defaultPage) {
-            setViewPage(defaultPage);
-        }
-    }, [appUser, items]);
+    // useEffect(() => {
+    //     if (!appUser) return;
+    //     const defaultPage = items.find(item => item.roles?.includes(appUser.type))?.page;
+    //     if (defaultPage) {
+    //         setViewPage(defaultPage);
+    //     }
+    // }, [appUser, items]);
 
     useEffect(() => {
         setNavItems(items.filter(item => !item.roles || item.roles.includes(appUser.type)));

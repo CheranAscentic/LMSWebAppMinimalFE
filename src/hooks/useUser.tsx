@@ -22,6 +22,7 @@ export default function useUser() {
 
     useEffect(() => {
     localStorage.setItem("appuser", JSON.stringify(appUser))
+    console.log('App user updated:', appUser);
     }, [appUser]);
 
     function logout() {
