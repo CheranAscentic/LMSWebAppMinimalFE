@@ -5,7 +5,7 @@ export interface Book {
     available: boolean;
     memberId?: number;
     publicationYear: number;
-    catagory: string;
+    category: string;
     isbn: string;
     synopsis: string;
 }

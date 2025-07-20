@@ -48,9 +48,10 @@ interface RegisterData {
 interface BookData {
   title: string;
   author: string;
+  year: number;
+  category: string;
   isbn: string;
-  publicationYear: number;
-  availableCopies: number;
+  synopsis: string;
 }
 
 interface UpdateBookData extends Partial<BookData> {
@@ -152,7 +153,7 @@ class ApiService {
   }
 
   private handleAuthError(): void {
-    console.error('Authentication error. Redirecting to login...');
+    console.error('Authentication error.');
   }
 
   async login(email: string, password: string): Promise<ApiResponse<LoginData>> {

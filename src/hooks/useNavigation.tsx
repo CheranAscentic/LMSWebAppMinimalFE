@@ -57,7 +57,7 @@ export default function useNavigation({ appUser, setAppUser, logout}: UseNavigat
         },
         {
             label: "Book Management",
-            page: <ManageBooks appUser={appUser}/>,
+            page: <ManageBooks appUser={appUser} setViewPage={setViewPage}/>,
             roles: ["StaffMinor", "StaffManagement"]
         },
         {
