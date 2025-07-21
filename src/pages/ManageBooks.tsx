@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useApi } from '../hooks/useApi';
 import apiService, { type Book } from '../services/ApiServices';
-import { Library, Book as BookIcon, User as UserIcon, Hash, Search, Plus, Edit3, Trash2 } from 'lucide-react';
+import { Library, Book as BookIcon, User as UserIcon, Hash, Search, Plus, Edit3, Trash2, BookOpen } from 'lucide-react';
 import Loading from '@/components/ui/loading';
 import type { User } from '@/models/User';
 import { CreateBook } from './CreateBook';
@@ -110,7 +110,7 @@ export default function ManageBooks({ appUser, setViewPage }: ManageBooksProps) 
         </h2>
 
         {/* Statistics Cards */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-center">
               <Library className="w-8 h-8 text-blue-500 mr-3" />
@@ -138,7 +138,7 @@ export default function ManageBooks({ appUser, setViewPage }: ManageBooksProps) 
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Controls */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

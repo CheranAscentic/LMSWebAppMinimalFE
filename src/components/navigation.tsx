@@ -34,7 +34,7 @@ export default function Navigation({ navItems, setViewPage }: NavigationProps) {
             <Button
                 key={index}
                 variant={variant}
-                className="w-full justify-start text-left hover:border-2 hover:border-slate-800"
+                className="w-full justify-start text-left hover:border-3 hover:border-slate-900"
                 onClick={() => handleNavClick(navItem)}
             >
                 {navItem.label}
